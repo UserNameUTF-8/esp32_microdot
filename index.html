@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <link rel="shortcut icon" href="/static/tem.jpg" type="image/x-icon">
+  <title>wather app</title>
+  <style>
+    section {
+      margin: 50px 10px;
+    }
+
+    section>h1 {
+      text-transform: capitalize;
+      text-align: center;
+      margin: 50px 0;
+    }
+
+    section>center {
+      margin: 50px 50px;
+    }
+  </style>
+</head>
+
+<body style="scroll-behavior: smooth;">
+  <div class="container">
+    <header>
+      <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Weather-app</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#location">Location</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#env">Enverment</a>
+              </li>
+              <li>
+                <button onclick="reset()" class="btn btn-primary">Reset Location</button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+  </div>
+
+
+  <img src="https://www.2ec.com.au/wp-content/uploads/sites/4/2022/08/MicrosoftTeams-image-21.jpg"
+    style="margin:auto; display:block" alt="alt-text" class="img-fluid">
+
+  <div class="container">
+
+
+    <section>
+      <center style="font-size: 1.3em;">
+        <h3 style='opacity:0.6' id="location"> Location </h3>
+        <b>Country </b><a id="con">TN </a><b>Region </b><a id="reg">Tunis</a><br>
+        <kbd id="date">loding</kbd>
+
+      </center>
+      <div class="row" id="ok">
+      </div>
+
+    </section>
+  </div>
+
+
+
+  <!-- section 2 -->
+
+
+  <div class="container">
+
+    <section>
+      <center style="font-size: 1.3em;">
+        <h3 style='opacity:0.6' id="env"> Enverment </h3>
+        <kbd id="date1">Time </kbd>
+
+      </center>
+
+      <div class="row justify-content-evenly">
+        <div class="card mb-3 col-lg-5 " style="max-width: 540px;">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img src='/static/tem.jpg' class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title"> Temperature</h5>
+                <p>Temp in Your Enverment <span class="same_as badge">status</span></p>
+                <div class="progress" role="progressbar" style="margin-top: 5px" aria-label="Example with label" \
+                  aria-valuenow="25" aria-valuemin="0" aria-valuemax="60">
+                  <div class="progress-bar" id="progressTem" style="background-color: sandybrown;">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card mb-3 col-lg-5" style=" max-width: 540px;">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img src='/static/ok.jpg' class=" img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title"> Humidity </h5>
+                <p>Humidity in Your Enverment <span class="same_as badge ">status</span></p>
+                <div class="progress" role="progressbar" style="margin-top: 5px" aria-label="Example with label"
+                  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                  <div class="progress-bar" id="progressHum"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+
+
+  <footer class="text-center text-white" style="background-color: #f1f1f1;">
+
+
+
+    <div class="text-center text-dark p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+      © 2020 Copyright:
+      <a class="text-dark" href="#facebook.com/Amine">Made With Love <br> by Amine Essid</a>
+    </div>
+
+  </footer>
+
+
+
+
+
+
+
+  <script>
+
+
+
+
+    let xhttp = new XMLHttpRequest()
+
+
+    xhttp.onload = function () {
+      let cont = document.getElementById("con")
+      let re = document.getElementById("reg")
+      cont.innerText = localStorage.getItem("Country") + " "
+      re.innerText = localStorage.getItem("Region")
+      if (xhttp.readyState == 4 && xhttp.status == 200) {
+        myJsonFile = JSON.parse(xhttp.responseText);
+        document.getElementById("date").innerHTML = (new Date().getDate()).toString().padStart(2, 0) + "/" + (new Date().getMonth() + 1).toString().padStart(2, 0) + "/" + (new Date()).getFullYear()
+        console.log(myJsonFile.hourly.temperature_2m[0] + " at time " + myJsonFile.hourly.time[0]);
+        let myTimeSection = document.getElementById("date1")
+        setInterval(() => {
+          let dateNew = new Date()
+          myTimeSection.innerText = "Time " + dateNew.getHours().toString().padStart(2, '0') + ":" + dateNew.getMinutes().toString().padStart(2, '0') + ":" + dateNew.getSeconds().toString().padStart(2, '0')
+        }, 1010)
+        date = new Date()
+        let j;
+        for (j = 0; j < myJsonFile.hourly.time.length; j++) {
+          if ((myJsonFile.hourly.time[j].slice(11, 13) == date.getHours())) {
+            break
+          }
+        }
+        // This loop of the data
+        for (let i = j; i < j + 6; i++) {
+
+          myVarTemp = myJsonFile.hourly.temperature_2m[i]
+          myVarHy = myJsonFile.hourly.relativehumidity_2m[i]
+          time = myJsonFile.hourly.time[i].slice(11)
+
+          myDes = ` <div class="col-md-12  col-lg-6 col-xxl-4" style="background-color:unset; border:unset">\
+          <div class="card border-primary mb-3">\
+            <div class="card-header">Time ${time}</div>\
+            <div class="card-body text-primary">\
+              <div class="row">\
+                <div class="col-5">Temperature</div>\
+                <div class="col">\
+                  <div class="progress" role="progressbar" style="margin-top: 5px" aria-label="Example with label"\
+                    aria-valuenow="25" aria-valuemin="0" aria-valuemax="60">\
+                    <div class="progress-bar" style="width: ${myVarTemp}%;background-color: sandybrown;">${myVarTemp}°C  \
+                    </div>\
+                  </div>\
+                </div>\
+              </div>\
+              <div class="row">\
+                <div class="col-5">Humidity</div>\
+                <div class="col">\
+                  <div class="progress" role="progressbar" style="margin-top: 5px" aria-label="Example with label"\
+                    aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">\
+                    <div class="progress-bar" style="width: ${myVarHy}%">${myVarHy} %</div>\
+                  </div>\
+                </div>\
+              </div>\
+              <br>\
+              <span class="badge ${(myVarTemp > 35) ? 'text-bg-warning' : 'text-bg-success'}">${(myVarTemp > 35) ? 'warning' : 'success'}</span>\
+            </div>\
+          </div>\
+        </div>`
+
+
+          document.getElementById("ok").innerHTML += myDes
+
+        }
+      }
+      else
+        console.log("Some thing went Wrong")
+    }
+
+
+
+    function getData() {
+      if (localStorage.length == 0) {
+        let myPromise = fetch('http://ip-api.com/json/')
+
+        myPromise.then((data) => {
+          return data.json()
+        }).then((dataJSON) => {
+          localStorage.setItem("latitude", dataJSON.lat)
+          console.log(dataJSON.country, dataJSON.city, dataJSON.lat, dataJSON.lon)
+          localStorage.setItem("longitude", dataJSON.lon)
+          localStorage.setItem("Country", dataJSON.country)
+          localStorage.setItem("Region", dataJSON.city)
+        }).then(() => {
+          xhttp.open("GET", `https://api.o/v1/forecast?latitude=${localStorage.getItem("latitude")}&longitude=${localStorage.getItem("longitude")}&hourly=temperature_2m,relativehumidity_2m`);
+          xhttp.send();
+        })
+      } else {
+        xhttp.open("GET", `https://api.open-meteo.com/v1/forecast?latitude=${localStorage.getItem("latitude")}&longitude=${localStorage.getItem("longitude")}&hourly=temperature_2m,relativehumidity_2m`);
+        xhttp.send();
+      }
+    }
+
+    const socket = new WebSocket('ws://' + location.host + '/echo');
+
+
+    socket.addEventListener('open', (event) => {
+      socket.send('Hello Server!');
+    });
+
+    let brands = document.getElementsByClassName('same_as')
+
+    socket.addEventListener('message', (event) => {
+
+      let humDom = document.getElementById('progressHum')
+      let temDom = document.getElementById('progressTem')
+
+      temDom.innerHTML = event.data.slice(0, 2) + ' °C'
+      humDom.innerHTML = event.data.slice(4) + ' %'
+      temDom.style.width = event.data.slice(0, 2) + '%'
+      humDom.style.width = event.data.slice(4) + '%'
+
+
+      if (parseFloat(event.data.slice(0, 2)) > 30) {
+        brands[0].classList.add('text-bg-warning')
+        brands[0].classList.remove('text-bg-success')
+
+      } else {
+        brands[0].classList.add('text-bg-success')
+        brands[0].classList.remove('text-bg-warning')
+
+      }
+      if (parseFloat(humDom.innerHTML = event.data.slice(4)) < 25) {
+        brands[1].classList.add('text-bg-warning')
+        brands[1].classList.remove('text-bg-success')
+      } else {
+        brands[1].classList.add('text-bg-success')
+        brands[1].classList.remove('text-bg-warning')
+
+      }
+
+
+    });
+
+
+
+
+
+
+    window.onload = getData()
+
+
+
+
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
+</body>
